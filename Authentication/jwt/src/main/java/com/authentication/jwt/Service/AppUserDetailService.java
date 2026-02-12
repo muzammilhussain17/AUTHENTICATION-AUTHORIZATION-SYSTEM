@@ -1,7 +1,8 @@
 package com.authentication.jwt.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,10 +17,6 @@ public class AppUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-
-  
-
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(email)
@@ -27,11 +24,6 @@ public class AppUserDetailService implements UserDetailsService {
         return new User(
                 user.getEmail(),
                 user.getPassword(),
-                new ArrayList<>()
-        );
-
-
-
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
-
 }

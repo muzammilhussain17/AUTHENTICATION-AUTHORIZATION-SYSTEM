@@ -96,6 +96,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+
+		<!-- ✅ Added: Redis for refresh token storage & token blacklisting -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
 		<!-- ✅ Added: Jakarta JAXB for XML binding (needed by older JWT usage) -->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>

@@ -11,25 +11,30 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Component
 public class JwtUtil {
 
     @Value("${jwt.secret-key}")
     private String Secret_Key;
 
-    public String generateToken(UserDetails userDetails) {
+    @Value("${jwt.access-token-expiry}")
+    private long accessTokenExpiry;
 
-        Map<String,Object> claims= new HashMap<>();
-       return createToken(claims,userDetails.getUsername());
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        // Add role to JWT claims
+        if (!userDetails.getAuthorities().isEmpty()) {
+            claims.put("role", userDetails.getAuthorities().iterator().next().getAuthority());
+        }
+        return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String username) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
-                .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
-                .setExpiration(new java.util.Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiry))
                 .signWith(io.jsonwebtoken.SignatureAlgorithm.HS256, Secret_Key)
                 .compact();
     }
@@ -40,16 +45,25 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return (String) claims.get("role");
+    }
+
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }

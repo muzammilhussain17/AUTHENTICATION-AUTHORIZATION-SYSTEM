@@ -1,6 +1,7 @@
 package com.authentication.jwt.controller;
 
 import com.authentication.jwt.Service.EmailService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,15 +27,14 @@ public class ProfieController {
             emailService.sendEmail(response.getEmail(), response.getName());
         } catch (Exception e) {
             System.err.println("❌ Email sending failed: " + e.getMessage());
-            // Optional: Log or notify admin
         }
 
         return response;
     }
+
     @GetMapping("/profilee")
+    @PreAuthorize("hasRole('USER') or hasRole('ARTISAN') or hasRole('ADMIN')")
     public profileResponse getProfile(@CurrentSecurityContext(expression = "authentication.name") String email) {
         return profileService.getProfile(email);
     }
-
-
 }

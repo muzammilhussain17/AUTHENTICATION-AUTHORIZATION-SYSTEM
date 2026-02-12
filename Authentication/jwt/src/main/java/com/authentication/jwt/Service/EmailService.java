@@ -19,7 +19,7 @@ public class EmailService {
         message.setFrom(fromEmail);
         message.setTo(toEmail);
         message.setSubject("Welcome to our platform");
-        message.setText("Welcome " + name + ", thanks for registering! \n\n Best regards\n Security Builders");
+        message.setText("Welcome " + name + ", thanks for registering! \n\n Best regards\n Craftistan");
         mailSender.send(message);
     }
     public void sendResetOtp(String toEmail,String otp) {
@@ -27,7 +27,7 @@ public class EmailService {
         message.setFrom(fromEmail);
         message.setTo(toEmail);
         message.setSubject("Password Reset OTP");
-        message.setText("Your OTP is: " + otp + "\n\n Best regards \n Security Builders");
+        message.setText("Your OTP is: " + otp + "\n\n Best regards \n Craftistan");
         mailSender.send(message);
     }
     public void sendOtp(String toEmail,String otp) {
@@ -35,7 +35,7 @@ public class EmailService {
         message.setFrom(fromEmail);
         message.setTo(toEmail);
         message.setSubject("Email Verification OTP");
-        message.setText("Your OTP is: " + otp + "\n\n Best regards \n Security Builders");
+        message.setText("Your OTP is: " + otp + "\n\n Best regards \n Craftistan");
         mailSender.send(message);
     }
 }
