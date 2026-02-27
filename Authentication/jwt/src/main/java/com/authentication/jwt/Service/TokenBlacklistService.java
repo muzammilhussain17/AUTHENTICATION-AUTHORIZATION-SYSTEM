@@ -15,7 +15,7 @@ public class TokenBlacklistService {
     private static final String BLACKLIST_PREFIX = "blacklist:";
 
     /**
-     * Blacklists a JWT access token.
+     * blacklists a JWT access token.
      * The token stays in Redis until its natural expiration time.
      */
     public void blacklistToken(String jwt, long expiryMillis) {
