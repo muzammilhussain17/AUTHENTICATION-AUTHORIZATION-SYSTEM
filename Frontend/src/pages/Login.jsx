@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Client-side validation
+    // THIS IS THE Client-side validation
     if (isCreateAccount && !name.trim()) {
       toast.error('Name is required');
       setLoading(false);
